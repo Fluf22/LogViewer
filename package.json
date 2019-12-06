@@ -1,47 +1,87 @@
 {
-  "name": "foxloglite",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.7.1",
-    "@material-ui/icons": "^4.5.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-redux": "^7.1.3",
-    "react-scripts": "3.3.0",
-    "redux": "^4.0.4",
-    "typescript": "^3.7.3"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.23",
-    "@types/node": "^12.12.14",
-    "@types/react": "^16.9.15",
-    "@types/react-dom": "^16.9.4",
-    "@types/react-redux": "^7.1.5",
-    "redux-devtools": "^3.5.0"
-  }
+	"name": "foxloglite",
+	"version": "0.1.0",
+	"private": true,
+	"main": "public/electron.js",
+	"homepage": "./",
+	"author": {
+		"name": "Thomas Raffray",
+		"email": "raffray.thomas@gmail.com",
+		"url": "https://cv.cinab.re/"
+	},
+	"build": {
+		"appId": "com.cinabre.foxloglite",
+		"productName": "FoxlogLite",
+		"copyright": "Copyright © 2019 ${author}",
+		"mac": {
+			"category": "public.app-category.utilities",
+			"icon": "build/appicon.ico"
+		},
+		"win": {
+			"icon": "build/appicon.ico"
+		},
+		"linux": {
+			"icon": "build/appicon.ico"
+		},
+		"files": [
+			"build/**/*",
+			"node_modules/**/*"
+		],
+		"directories": {
+			"buildResources": "assets"
+		}
+	},
+	"dependencies": {
+		"@material-ui/core": "^4.7.1",
+		"@material-ui/icons": "^4.5.1",
+		"electron-is-dev": "^1.1.0",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0",
+		"react-redux": "^7.1.3",
+		"react-scripts": "3.3.0",
+		"redux": "^4.0.4",
+		"typescript": "^3.7.3"
+	},
+	"scripts": {
+		"start": "rescripts start",
+		"build": "rescripts build",
+		"test": "rescripts test",
+		"eject": "react-scripts eject",
+		"electron-dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
+		"postinstall": "./node_modules/.bin/electron-builder install-app-deps",
+		"preelectron-pack": "npm run build",
+		"electron-dist": "./node_modules/.bin/electron-builder dist"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@rescripts/cli": "0.0.13",
+		"@rescripts/rescript-env": "0.0.11",
+		"@testing-library/jest-dom": "^4.2.4",
+		"@testing-library/react": "^9.3.2",
+		"@testing-library/user-event": "^7.1.2",
+		"@types/jest": "^24.0.23",
+		"@types/node": "^12.12.14",
+		"@types/react": "^16.9.15",
+		"@types/react-dom": "^16.9.4",
+		"@types/react-redux": "^7.1.5",
+		"concurrently": "^5.0.0",
+		"electron": "^7.1.3",
+		"electron-builder": "^21.2.0",
+		"redux-devtools": "^3.5.0",
+		"wait-on": "^3.3.0"
+	}
 }
