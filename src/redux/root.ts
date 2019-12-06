@@ -1,7 +1,11 @@
 import { combineReducers } from 'redux';
-// import simpleReducer from './simpleReducer';
+import { ILogsPayload } from './types';
+import { logsReducer } from './reducers';
 
+export interface AppState {
+	logsPayload: ILogsPayload;
+};
 
 export default combineReducers({
-	// simpleReducer
+	logsPayload: logsReducer
 });

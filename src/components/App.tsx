@@ -1,8 +1,22 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import '../styles/App.css';
+import { AppState } from '../redux/root';
+import { fetchLogs } from '../redux/actions';
+import { ILog } from '../redux/types';
 
-class App extends PureComponent {
+interface IAppProps {
+	isLoading: boolean;
+	logs: ILog[];
+	fetchLogs: () => {};
+};
+
+class App extends PureComponent<IAppProps> {
+	constructor(props: any) {
+		super(props);
+		this.props.fetchLogs();
+	}
+
 	render() {
 		return (
 			<div className="App">
@@ -17,4 +31,17 @@ class App extends PureComponent {
 	}
 }
 
-export default connect()(App);
+function mapStateToProps(state: AppState) {
+	return {
+		isLoading: state.logsPayload.isLoading,
+		logs: state.logsPayload.logs
+	}
+}
+
+function mapDispatchToProps(dispatch: any) {
+	return {
+		fetchLogs: () => dispatch(fetchLogs())
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
