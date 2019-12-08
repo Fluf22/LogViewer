@@ -1,4 +1,5 @@
-export const INIT_LOGS_ACTION = "INIT_LOGS_ACTION";
+export const FETCH_LOGS_ACTION = "FETCH_LOGS_ACTION";
+export const SET_LOGS_ACTION = "SET_LOGS_ACTION";
 
 export interface ILog {
 	source: string;
@@ -18,10 +19,15 @@ export interface ILogsPayload {
 };
 
 interface FetchLogsAction {
-	type: typeof INIT_LOGS_ACTION,
+	type: typeof FETCH_LOGS_ACTION,
 	payload: {
 		isLoading: boolean
 	}
 };
 
-export type LogsActionTypes = FetchLogsAction;
+interface SetLogsAction {
+	type: typeof SET_LOGS_ACTION,
+	payload: ILogsPayload
+};
+
+export type LogsActionTypes = FetchLogsAction | SetLogsAction;

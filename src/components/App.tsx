@@ -2,19 +2,29 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import '../styles/App.css';
 import { AppState } from '../redux/root';
-import { fetchLogs } from '../redux/actions';
+import { fetchLogs, setLogs } from '../redux/actions';
 import { ILog } from '../redux/types';
+import { ipcRenderer } from 'electron';
 
 interface IAppProps {
 	isLoading: boolean;
 	logs: ILog[];
 	fetchLogs: () => {};
+	setLogs: (logs: ILog[]) => {};
 };
 
 class App extends PureComponent<IAppProps> {
 	constructor(props: any) {
 		super(props);
 		this.props.fetchLogs();
+		ipcRenderer.on('asynchronous-reply', (event, arg) => {
+			console.log("React:", arg) // affiche "pong"
+			// this.props.setLogs(arg);
+		});
+	}
+
+	componentDidMount() {
+		ipcRenderer.send('asynchronous-message', 'ping');
 	}
 
 	render() {
@@ -40,7 +50,8 @@ function mapStateToProps(state: AppState) {
 
 function mapDispatchToProps(dispatch: any) {
 	return {
-		fetchLogs: () => dispatch(fetchLogs())
+		fetchLogs: () => dispatch(fetchLogs()),
+		setLogs: (logs: ILog[]) => dispatch(setLogs(logs))
 	}
 }
 

@@ -1,6 +1,7 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -38,4 +39,8 @@ app.on('activate', () => {
 	if (mainWindow === null) {
 		createWindow();
 	}
+	ipcMain.on('asynchronous-message', (event, arg) => {
+		console.log("Electron:", arg) // affiche "ping"
+		event.reply('asynchronous-reply', 'pong')
+	})
 });
