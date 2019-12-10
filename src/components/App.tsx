@@ -31,9 +31,14 @@ class App extends PureComponent<IAppProps, IAppState> {
 	}
 
 	componentDidMount() {
-		ipcRenderer.on('asynchronous-reply', (event, arg) => {
-			console.log("React:", arg) // affiche "pong"
-			// this.props.setLogs(arg);
+		ipcRenderer.on('asynchronous-reply', (event, res) => {
+			if (res.err !== null) {
+				console.log("Error in data: ", res.err);
+			} else {
+				const logStr = new TextDecoder("utf-8").decode(res.data);
+				console.log("React:", logStr);
+				// this.props.setLogs(arg);
+			}
 		});
 		ipcRenderer.send('asynchronous-message', this.state.filePath);
 		const newTimerID = window.setInterval(() => {
