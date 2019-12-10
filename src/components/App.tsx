@@ -13,18 +13,51 @@ interface IAppProps {
 	setLogs: (logs: ILog[]) => {};
 };
 
-class App extends PureComponent<IAppProps> {
+interface IAppState {
+	timerID: number | null;
+	filePath: string;
+	interval: number;
+};
+
+class App extends PureComponent<IAppProps, IAppState> {
 	constructor(props: any) {
 		super(props);
+		this.state = {
+			timerID: null,
+			filePath: "/tmp/access.log",
+			interval: 10000
+		};
 		this.props.fetchLogs();
+	}
+
+	componentDidMount() {
 		ipcRenderer.on('asynchronous-reply', (event, arg) => {
 			console.log("React:", arg) // affiche "pong"
 			// this.props.setLogs(arg);
 		});
+		ipcRenderer.send('asynchronous-message', this.state.filePath);
+		const newTimerID = window.setInterval(() => {
+			ipcRenderer.send('asynchronous-message', this.state.filePath);
+		}, this.state.interval);
+		this.setState({ timerID: newTimerID });
 	}
 
-	componentDidMount() {
-		ipcRenderer.send('asynchronous-message', 'ping');
+	componentDidUpdate(prevProps: IAppProps, prevState: IAppState) {
+		if (this.state.timerID &&
+			(this.state.interval !== prevState.interval || this.state.filePath !== prevState.filePath)) {
+			window.clearInterval(this.state.timerID);
+			const newTimerID = window.setInterval(() => {
+				ipcRenderer.send('asynchronous-message', this.state.filePath);
+			}, this.state.interval);
+			this.setState({ timerID: newTimerID });
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.state.timerID) {
+			window.clearInterval(this.state.timerID);
+			this.setState({ timerID: null });
+		}
 	}
 
 	render() {

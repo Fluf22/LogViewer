@@ -2,6 +2,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
+const fs = require('fs');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -17,6 +18,18 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: true
 		}
+	});
+	ipcMain.on('asynchronous-message', (event, filePath) => {
+		console.log("Electron:", filePath) // affiche "ping"
+		fs.readFile(filePath, (err, data) => {
+			let response = JSON.parse("{ \"err\": null, \"data\": null }");
+			if (err) {
+				response.err = err;
+			} else {
+				response.data = data;
+			}
+			event.reply('asynchronous-reply', response);
+		});
 	});
 	mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
 	if (isDev) {
@@ -39,8 +52,4 @@ app.on('activate', () => {
 	if (mainWindow === null) {
 		createWindow();
 	}
-	ipcMain.on('asynchronous-message', (event, arg) => {
-		console.log("Electron:", arg) // affiche "ping"
-		event.reply('asynchronous-reply', 'pong')
-	})
 });
