@@ -5,11 +5,13 @@ import { createStore } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './redux/root';
 import App from './components/App';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 
 function configureStore() {
 	return createStore(
-		rootReducer
+		rootReducer,
+		composeWithDevTools()
 	);
 }
 

@@ -22,12 +22,45 @@ interface IAppState {
 class App extends PureComponent<IAppProps, IAppState> {
 	constructor(props: any) {
 		super(props);
+		this.formatLog = this.formatLog.bind(this);
 		this.state = {
 			timerID: null,
 			filePath: "/tmp/access.log",
 			interval: 10000
 		};
 		this.props.fetchLogs();
+	}
+
+	formatLog(rawLog: string): ILog {
+		let formattedLog: ILog;
+		try {
+			const [source, a, username, rawDate, rawTz, rawMethod, endpoint, b, status, size] = rawLog.split(" ");
+			console.log([source, a, username, rawDate, rawTz, rawMethod, endpoint, b, status, size])
+			const date = `${rawDate.replace("[", "")} ${rawTz.replace("]", "")}`;
+			const method = rawMethod.replace("\"", "");
+			let section = "";
+			const splittedSection = endpoint.split("/");
+			for (let i = 0; i < splittedSection.length - 1; ++i) {
+				section += "/";
+				section += splittedSection[i];
+			}
+			formattedLog = {
+				source,
+				username,
+				date,
+				method,
+				endpoint,
+				section,
+				status,
+				size,
+				hasError: false
+			};
+		} catch (err) {
+			formattedLog = {
+				hasError: true
+			};
+		}
+		return formattedLog;
 	}
 
 	componentDidMount() {
@@ -37,7 +70,12 @@ class App extends PureComponent<IAppProps, IAppState> {
 			} else {
 				const logStr = new TextDecoder("utf-8").decode(res.data);
 				console.log("React:", logStr);
-				// this.props.setLogs(arg);
+				const rawLogs = logStr.split("\n").filter(item => item !== "");
+				const formattedLogs: ILog[] = [];
+				for (let i = 0; i < rawLogs.length; ++i) {
+					formattedLogs.push(this.formatLog(rawLogs[i]));
+				}
+				this.props.setLogs(formattedLogs);
 			}
 		});
 		ipcRenderer.send('asynchronous-message', this.state.filePath);

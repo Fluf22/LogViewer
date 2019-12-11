@@ -2,15 +2,15 @@ export const FETCH_LOGS_ACTION = "FETCH_LOGS_ACTION";
 export const SET_LOGS_ACTION = "SET_LOGS_ACTION";
 
 export interface ILog {
-	source: string;
-	username: string;
-	date: string;
-	method: string;
-	endpoint: string;
-	section: string;
-	version: string;
-	status: string;
-	size: string;
+	source?: string;
+	username?: string;
+	date?: string;
+	method?: string;
+	endpoint?: string;
+	section?: string;
+	status?: string;
+	size?: string;
+	hasError: boolean;
 };
 
 export interface ILogsPayload {

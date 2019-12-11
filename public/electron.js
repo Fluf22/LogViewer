@@ -33,8 +33,9 @@ function createWindow() {
 	});
 	mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
 	if (isDev) {
-		// Open the DevTools.
-		//BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
+		// Open the DevTools
+		BrowserWindow.addDevToolsExtension("/home/fluf/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.2.1_0");
+		BrowserWindow.addDevToolsExtension("/home/fluf/.config/google-chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0");
 		mainWindow.webContents.openDevTools();
 	}
 	mainWindow.on('closed', () => mainWindow = null);
