@@ -46,7 +46,6 @@
 	"scripts": {
 		"start": "rescripts start",
 		"build": "rescripts build",
-		"test": "rescripts test",
 		"eject": "react-scripts eject",
 		"electron-dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
 		"postinstall": "./node_modules/.bin/electron-builder install-app-deps",

@@ -66,7 +66,7 @@ class App extends PureComponent<IAppProps, IAppState> {
 			filePath: "/tmp/access.log",
 			interval: 10,
 			isSettingsPopupOpen: false,
-			expandedPanel: "log-stats",
+			expandedPanel: "",
 			isSnackbarDisplayed: true
 		};
 		this.props.fetchLogs();
