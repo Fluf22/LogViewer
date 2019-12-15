@@ -1,4 +1,4 @@
-import { ILogsPayload, LogsActionTypes, FETCH_LOGS_ACTION, SET_LOGS_ACTION } from "./types";
+import { ILog, ILogsPayload, LogsActionTypes, FETCH_LOGS_ACTION, SET_LOGS_ACTION } from "./types";
 
 const initialState: ILogsPayload = {
 	isLoading: false,
@@ -15,8 +15,8 @@ export function logsReducer(state: ILogsPayload = initialState, action: LogsActi
 			return Object.assign({}, state, {
 				isLoading: action.payload.isLoading,
 				logs: [
-					...state.logs.filter(log => action.payload.logs.includes(log)),
-					...action.payload.logs.filter(log => !state.logs.includes(log))
+					...state.logs.filter((stateLog: ILog) => action.payload.logs.map((payloadLog: ILog) => payloadLog.hash).includes(stateLog.hash)),
+					...action.payload.logs.filter((payloadLog: ILog) => !state.logs.map((stateLog: ILog) => stateLog.hash).includes(payloadLog.hash))
 				]
 			});
 		default:

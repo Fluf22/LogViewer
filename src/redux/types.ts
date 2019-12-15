@@ -10,6 +10,7 @@ export interface ILog {
 	section?: string;
 	status?: string;
 	size?: string;
+	hash: string;
 	hasError: boolean;
 };
 
