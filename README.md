@@ -1,11 +1,11 @@
-# FoxlogLite
+# LogViewer
 Log analyzer application
 
 ## How to build
 
 1. Git clone this repository
 ```bash
-git clone https://github.com/Fluf22/FoxlogLite.git
+git clone https://github.com/Fluf22/LogViewer.git
 ```
 
 2. Make sure you have Node.JS 10.x and npm installed on your PC ([node website](https://nodejs.org/))
